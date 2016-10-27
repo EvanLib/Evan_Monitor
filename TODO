@@ -1,0 +1,19 @@
+This application was built for me to monitor my life an events that happen in it.
+current just an idea.
+
+
+---------Set UP
+/main.go
+/views:
+  /view
+  /New
+  /layout
+  /index
+  /edit
+/modes/model.go
+/controllers
+  /index.go
+  /view.go
+  /new.go
+  /delete.go
+  /edit.go

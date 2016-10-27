@@ -1,0 +1,117 @@
+{{define "body"}}
+
+    <div class="page-header">
+      <h1>User's Life Events</h1>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="thumbnail">
+          <img src="..." alt="...">
+          <div class="caption">
+            <h3>Thumbnail label</h3>
+            <p>...</p>
+            <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h3>Events</h3>
+  <section id="labels-badges">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range . }}
+          <tr>
+            <td>
+              <span class="label">{{.Id}}</span>
+            </td>
+            <td>
+              <span class="badge badge-success">{{.Type}}</span>
+            </td>
+            <td>
+              {{.Name}}
+            </td>
+            <td>
+              {{.Description}}
+            </td>
+            <td>
+              {{.Created}}
+            </td>
+          </tr>
+          {{end}}
+      </tbody>
+    </table>
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add Event</h4>
+          </div>
+          <div class="modal-body">
+        <form method="POST" action="/events/createEvent" id="form-create-event">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Event Name:</label>
+            <input type="text" class="form-control" id="event-name" name="eventName">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">Event Description:</label>
+            <textarea class="form-control" id="event-description" name="eventDescription"></textarea>
+          </div>
+          <div class="form-group">
+          <label for="type-select">Select:</label>
+            <select class="form-control" id="event-type" name="eventType">
+                <option value="pos">Positive</option>
+                <option value="neg">Negative</option>
+            </select>
+          </div>
+        </form>
+      </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="form-create-event-submit">Add Event</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script >
+    var eventSubmit = document.querySelector('#form-create-event-submit');
+    var eventName = document.querySelector('#event-name');
+    var eventDescription = document.querySelector('#event-description');
+    var eventType = document.querySelector('#event-type');
+
+    //    Creating Event
+    //    Event status
+    eventSubmit.addEventListener('click', function(e){
+      e.preventDefault();
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/checkUserName');
+      xhr.send(eventName.value, eventDescription.value, eventType.value)
+
+      xhr.addEventListener('readystatechange', function(){
+          if (xhr.readyState === 1) {
+              var item = xhr.responseText;
+              console.log("Event added");
+            }
+      });
+
+      return;
+    });
+    </script>
+
+
+{{end}}
