@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -35,12 +34,8 @@ func (self EventsController) Index(w http.ResponseWriter, r *http.Request, ps ht
 	return nil
 }
 func (self EventsController) CreateAPI(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	bs, err := ioutil.ReadAll(r.Body)
-	sbs := string(bs)
-	fmt.Println(sbs)
-	if err != nil {
-		return err
-	}
+	fmt.Println(r.FormValue("eventType"))
+
 	return nil
 }
 func (self EventsController) Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
