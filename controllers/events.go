@@ -33,11 +33,7 @@ func (self EventsController) Index(w http.ResponseWriter, r *http.Request, ps ht
 	//fmt.Print(events)
 	return nil
 }
-func (self EventsController) CreateAPI(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	fmt.Println(r.FormValue("eventType"))
 
-	return nil
-}
 func (self EventsController) Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
 	var evType int8
 	if r.FormValue("eventType") == "pos" {
@@ -52,7 +48,7 @@ func (self EventsController) Create(w http.ResponseWriter, r *http.Request, ps h
 		Description: r.FormValue("eventDescription"),
 		Created:     time.Now(),
 	}
-	fmt.Println("Event Name: ", ev.Name)
+	fmt.Printf("Event Name: %s saved. \n", ev.Name)
 	err := ev.Save()
 	return err
 }

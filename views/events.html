@@ -93,15 +93,12 @@
     var eventName = document.querySelector('#event-name');
     var eventDescription = document.querySelector('#event-description');
     var eventType = document.querySelector('#event-type');
-    var formData = new FormData( document.getElementById("form-create-event") );
 
-    eventType.addEventListener("change", function(e)){
-      console.log("changed")
-    }
     //    Creating Event
     //    Event status
     eventSubmit.addEventListener('click', function(e){
       e.preventDefault();
+      var formData = new FormData( document.getElementById("form-create-event") );
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/events/create');
       xhr.send(formData)

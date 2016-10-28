@@ -26,7 +26,7 @@ func main() {
 	//Http Router
 	router := httprouter.New()
 	router.GET("/events", eventsCon.Perform(eventsCon.Index))
-	router.POST("/events/create", eventsCon.Perform(eventsCon.CreateAPI))
+	router.POST("/events/create", eventsCon.Perform(eventsCon.Create))
 
 	//Serving Static Files...
 	router.ServeFiles("/static/*filepath", http.Dir("static"))
