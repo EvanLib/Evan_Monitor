@@ -39,9 +39,9 @@ func (self EventsController) Create(w http.ResponseWriter, r *http.Request, ps h
 	if r.FormValue("eventType") == "pos" {
 		evType = 1
 	} else {
-		evType = 2
+		evType = -1
 	}
-
+	fmt.Fprint(w, "true")
 	ev := models.Event{
 		Type:        evType,
 		Name:        r.FormValue("eventName"),
