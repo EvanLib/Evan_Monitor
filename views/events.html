@@ -34,14 +34,20 @@
               </tr>
             </thead>
             <tbody>
-              
+
               {{ range . }}
                 <tr {{if eq .Type 1}} class="table-success"{{end}}{{if eq .Type -1}} class="table-danger"{{end}}>
                   <td>
                     <span class="label">{{.Id}}</span>
                   </td>
                   <td>
-                    <span class="badge badge-success">{{.Type}}</span>
+                      <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+                    {{if eq .Type 1}}
+                      <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                    {{end}}
+                    {{if eq .Type -1}}
+                      <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                    {{end}}
                   </td>
                   <td>
                     {{.Name}}
@@ -108,6 +114,7 @@
     e.preventDefault();
     var formData = new FormData( document.getElementById("form-create-event") );
     var xhr = new XMLHttpRequest();
+    $('#myModal').modal('hide');
     xhr.open('POST', '/events/create');
     xhr.send(formData)
     xhr.addEventListener('readystatechange', function(){
@@ -116,6 +123,7 @@
             console.log("Event added");
           }
     });
+    location.reload();
     return;
   });
 </script>
