@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -22,15 +23,32 @@ func main() {
 
 	//Create Controllers and Models
 	eventsCon := controllers.Events
+	scheduleCon := controllers.ScheculeEvents
 
 	//Http Router
 	router := httprouter.New()
 	router.GET("/events", eventsCon.Perform(eventsCon.Index))
+	router.GET("/schedule/events", scheduleCon.Perform(scheduleCon.Index))
+
 	router.POST("/events/create", eventsCon.Perform(eventsCon.Create))
+	router.POST("/schedule/events/create", scheduleCon.Perform(scheduleCon.Create))
 
 	//Serving Static Files...
 	router.ServeFiles("/static/*filepath", http.Dir("static"))
+	// Database alias.
+	name := "default"
 
+	// Drop table and re-create.
+	force := true
+
+	// Print log.
+	verbose := true
+
+	// Error.
+	err := orm.RunSyncdb(name, force, verbose)
+	if err != nil {
+		fmt.Println(err)
+	}
 	//Log for Http server
 	log.Println("Starting server on :3000")
 	log.Fatal(http.ListenAndServe(":3000", router))

@@ -11,10 +11,9 @@ type ScheduleEvent struct {
 	Type         int8 // Repeated or Not
 	Name         string
 	Description  string
-	TimeStart    time.Time
 	TimeDuration int    //TimeDuration * minute
 	Days         string //0-6 0 Sunday, 1, Monday ...
-	Date         time.Time
+	Time         time.Time
 }
 
 func (se *ScheduleEvent) Save() error {
@@ -29,7 +28,7 @@ func (se *ScheduleEvent) Save() error {
 func GetAllScheduleEvents() ([]ScheduleEvent, error) {
 	//ORM
 	o := orm.NewOrm()
-	sev := o.QueryTable("scheduleevent")
+	sev := o.QueryTable("schedule_event")
 
 	var allScheduleEvents []ScheduleEvent
 	sev.All(&allScheduleEvents)
