@@ -9,5 +9,6 @@ func init() {
 	orm.RegisterModel(new(Event))
 	orm.RegisterModel(new(RepeatedEvent))
 	orm.RegisterModel(new(OneTimeEvent))
+	orm.RegisterModel(new(Schedule))
 
 }

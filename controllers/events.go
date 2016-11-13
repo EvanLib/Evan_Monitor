@@ -25,7 +25,7 @@ func (self EventsController) Index(w http.ResponseWriter, r *http.Request, ps ht
 		return err
 	}
 
-	tpl, err := template.ParseFiles("views/header_footer.html", "views/events.html")
+	tpl, err := template.ParseFiles("views/header_footer.html", "views/navbar.html", "views/events.html")
 	if err != nil {
 		return err
 	}
@@ -88,8 +88,8 @@ func (self EventsController) CreateRepeatEvent(w http.ResponseWriter, r *http.Re
 	//Create event
 	ev := models.Event{
 		Type:        2,
-		Name:        r.FormValue("eventName"),
-		Description: r.FormValue("eventDescription"),
+		Name:        r.FormValue("event-name"),
+		Description: r.FormValue("event-description"),
 	}
 	//Create RepeatedEvent
 	rev := models.RepeatedEvent{

@@ -1,121 +1,170 @@
 {{define "body"}}
-<div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
-          <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-          <li><a href="#">Reports</a></li>
-        </ul>
-
-      </div>
-      <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
-        <h1>Dashboard</h1>
-
-        <div class="row placeholders">
-          <div class="col-xs-6 col-sm-3 placeholder offset-md-4">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-fluid" alt="Generic placeholder thumbnail">
-            <h4>User Name</h4>
-            <span class="text-muted">Cool Title</span></br>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"> Add Event</button>
-          </div>
-
-        </div>
-
-        <h2>User's Events</h2>
-        <div class="table-responsive">
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Type</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Created</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              {{ range . }}
-                <tr {{if eq .Type 1}} class="table-success"{{end}}{{if eq .Type -1}} class="table-danger"{{end}}>
-                  <td>
-                    <span class="label">{{.Id}}</span>
-                  </td>
-                  <td>
-                      <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
-                    {{if eq .Type 1}}
-                      <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-                    {{end}}
-                    {{if eq .Type -1}}
-                      <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                    {{end}}
-                  </td>
-                  <td>
-                    {{.Name}}
-                  </td>
-                  <td>
-                    {{.Description}}
-                  </td>
-                  <td>
-                    {{.Created}}
-                  </td>
-                </tr>
-                {{end}}
-              </tbody>
-            </tbody>
-          </table>
-        </div>
+<div class="container">
+  <div class="row">
+    {{template "navbar" .}}
+    <div class="col-sm-9 content">
+    <div class="dashhead">
+      <div class="dashhead-titles">
+        <h6 class="dashhead-subtitle">Dashboards</h6>
+        <h2 class="dashhead-title">User's Events</h2>
       </div>
     </div>
-    <!-- Trigger the modal with a button -->
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add Event</h4>
-        </div>
-        <div class="modal-body">
-        <form method="POST" action="/events/createEvent" id="form-create-event">
-          <div class="form-group">
-            <label for="recipient-name" class="control-label">Event Name:</label>
-            <input type="text" class="form-control" id="event-name" name="eventName">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="control-label">Event Description:</label>
-            <textarea class="form-control" id="event-description" name="eventDescription"></textarea>
-          </div>
-          <div class="form-group">
-          <label for="type-select">Select:</label>
-            <select class="form-control" id="event-type" name="eventType">
-                <option value="pos">Positive</option>
-                <option value="neg">Negative</option>
-            </select>
-          </div>
-        </form>
+    <div class="hr-divider">
+      <h3 class="hr-divider-content hr-divider-heading">
+          Monday
+      </h3>
+    </div>
+    <div class="table-full">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Event</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range .}}
+              <tr>
+                <td> {{.Id}} </td>
+                <td> {{.Name}} </td>
+                <td> {{.Description}}</td>
+              </tr>
+              {{end}}
+              <tr >
+                <td>
+                5:30
+                </td>
+                </td>
+                <td>
+                  Wake Up
+                </td>
+                <td>
+                  Get the fuck up you faggot.
+                </td>
+
+              </tr>
+
+            </tbody>
+          </tbody>
+        </table>
       </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="form-create-event-submit">Add Event</button>
+    </div>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#eventsModal"> Add Event</button>
+  </div>
+  </div>
+</div>
+<div id="eventsModal" class="modal fade"  role="dialog" aria-labelledby="myModalLabel">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" id="myModalLabel">Schedule Event</h4>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="/events/createEvent" id="form-create-schedule-event">
+        <div class="form-group">
+          <label for="recipient-name" class="control-label">Event Name:</label>
+          <input type="text"  maxlength="40" class="form-control" id="event-name" name="event-name">
+        </div>
+        <div class="form-group">
+          <label for="message-text" class="control-label">Event Description:</label>
+          <textarea class="form-control" maxlength="140" id="event-description" name="event-description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="repeat-days" class="control-label">Repeat Days</label></br>
+          <div class="checkbox-inline custom-control custom-checkbox">
+            <label>
+              <input type="checkbox" id="event-sun" name="event-sun">
+              <span class="custom-control-indicator"></span>
+              Sun
+            </label>
+          </div>
+          <div class="checkbox-inline custom-control custom-checkbox">
+            <label>
+              <input type="checkbox" id="event-mon" name="event-mon">
+              <span class="custom-control-indicator"></span>
+              Mon
+            </label>
+          </div>
+          <div class="checkbox-inline custom-control custom-checkbox">
+            <label>
+              <input type="checkbox" id="event-tues" name="event-tues">
+              <span class="custom-control-indicator"></span>
+              Tues
+            </label>
+          </div>
+          <div class="checkbox-inline custom-control custom-checkbox">
+            <label>
+              <input type="checkbox" id="event-wednesday" name="event-wed">
+              <span class="custom-control-indicator"></span>
+              Wed
+            </label>
+          </div>
+          <div class="checkbox-inline custom-control custom-checkbox">
+            <label>
+              <input type="checkbox" id="event-thurs" name="event-thurs">
+              <span class="custom-control-indicator"></span>
+              Thurs
+            </label>
+          </div>
+          <div class="checkbox-inline custom-control custom-checkbox">
+            <label>
+              <input type="checkbox" id="event-fri" name="event-fri">
+              <span class="custom-control-indicator"></span>
+              Fri
+            </label>
+          </div>
+        <div class="checkbox-inline custom-control custom-checkbox">
+          <label>
+            <input type="checkbox" id="event-sat" name="event-sat">
+            <span class="custom-control-indicator"></span>
+            Sat
+          </label>
         </div>
       </div>
+      <div class="form-group">
+        <label for="start-date" class="control-label">Start Date and Repeat</label>
+        <div class="input-group">
+          <span class="input-group-addon">
+            <span class="icon icon-calendar"></span>
+          </span>
+          <input type="text" value="01/01/2015" class="form-control" data-provide="datepicker" style="width: 200px;" id="event-startdate" name="event-startdate">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="time-duration" class="control-label">Time Duration</label> <br />
+        <input type="number" min="0" max="24" step="1" id="event-hourduration" name="event-hourdur">
+        <input type="number" min="0" max="60" step="5" id="event-minuteduration" name="event-minutedur">
+      </div>
+      <div class="form-group">
+        <label for="time-duration" class="control-label">Time Start</label> <br />
+        <input type="number" min="0" max="24" step="1" id="event-hour" name="event-hour">
+        <input type="number" min="0" max="60" step="5" id="event-minuteduration" name="event-minute">
+      </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" data-dismiss="modal" id="form-create-schedule-event-button">Add Schedule Event</button>
     </div>
   </div>
 </div>
 <script >
-  var eventSubmit = document.querySelector('#form-create-event-submit');
+  var eventSubmit = document.querySelector('#form-create-schedule-event-button');
   var eventName = document.querySelector('#event-name');
   var eventDescription = document.querySelector('#event-description');
-  var eventType = document.querySelector('#event-type');
+
   //    Creating Event
   //    Event status
   eventSubmit.addEventListener('click', function(e){
     e.preventDefault();
-    var formData = new FormData( document.getElementById("form-create-event") );
+    var formData = new FormData( document.getElementById("form-create-schedule-event") );
     var xhr = new XMLHttpRequest();
-    $('#myModal').modal('hide');
-    xhr.open('POST', '/events/create');
+    $('#eventsModal').modal('hide');
+    xhr.open('POST', '/events/createRepeat');
     xhr.send(formData)
     xhr.addEventListener('readystatechange', function(){
         if (xhr.readyState === 1) {

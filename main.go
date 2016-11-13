@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -22,26 +21,19 @@ func main() {
 	orm.RegisterDataBase("default", "mysql", "root:lol626465@/me_schedule?charset=utf8")
 	//Create controllers
 	evscontroller := controllers.Events
+	schscontroller := controllers.Schedules
 	//Http Router
 	router := httprouter.New()
 	router.GET("/events", evscontroller.Perform(evscontroller.Index))
+	router.POST("/events/createRepeat", evscontroller.Perform(evscontroller.CreateRepeatEvent))
+
+	router.GET("/schedules", schscontroller.Perform(schscontroller.Index))
+	router.GET("/schedules/addevents", schscontroller.Perform(schscontroller.ScheduleEvents))
+	router.POST("/schedule/create", schscontroller.Perform(schscontroller.Create))
 
 	//Serving Static Files...
 	router.ServeFiles("/static/*filepath", http.Dir("static"))
-	// Database alias.
-	name := "default"
 
-	// Drop table and re-create.
-	force := true
-
-	// Print log.
-	verbose := true
-
-	// Error.
-	err := orm.RunSyncdb(name, force, verbose)
-	if err != nil {
-		fmt.Println(err)
-	}
 	//Log for Http server
 	log.Println("Starting server on :3000")
 	log.Fatal(http.ListenAndServe(":3000", router))

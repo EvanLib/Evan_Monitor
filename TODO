@@ -24,3 +24,18 @@ currently just an idea.
 --Build HTML files
   -ScheduleEvents
   -ScheduleCreator
+
+  // Database alias.
+  name := "default"
+
+  // Drop table and re-create.
+  force := true
+
+  // Print log.
+  verbose := true
+
+  // Error.
+	err := orm.RunSyncdb(name, force, verbose)
+	if err != nil {
+		fmt.Println(err)
+	}

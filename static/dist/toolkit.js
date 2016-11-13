@@ -4017,7 +4017,7 @@ $(function () {
 		minViewMode: 0,
 		multidate: false,
 		multidateSeparator: ',',
-		orientation: "auto",
+		orientation: "top auto",
 		rtl: false,
 		startDate: -Infinity,
 		startView: 0,
