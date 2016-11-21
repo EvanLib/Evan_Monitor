@@ -28,6 +28,7 @@ func main() {
 	router.POST("/events/createRepeat", evscontroller.Perform(evscontroller.CreateRepeatEvent))
 
 	router.GET("/schedules", schscontroller.Perform(schscontroller.Index))
+	router.GET("/schedules/list", schscontroller.Perform(schscontroller.ScheduleListEvents))
 	router.GET("/schedules/addevents", schscontroller.Perform(schscontroller.ScheduleEvents))
 	router.POST("/schedule/create", schscontroller.Perform(schscontroller.Create))
 

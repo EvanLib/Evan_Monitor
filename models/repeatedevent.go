@@ -6,7 +6,7 @@ import "github.com/astaxie/beego/orm"
 type RepeatedEvent struct {
 	Id            int    `orm:"auto"`
 	Event         *Event `orm:"rel(one)"`
-	Days          string
+	Days          string `json:"days"`
 	TimeStart     string
 	TimeDuraction int //Int * minutes builds duration
 
@@ -19,13 +19,13 @@ func (rev *RepeatedEvent) Save() error {
 	return err
 }
 
-func GetAllRepeatEvents() ([]RepeatedEvent, error) {
+func GetAllRepeatEvents() ([]*RepeatedEvent, error) {
 	o := orm.NewOrm()
-	evs := o.QueryTable("repeated_event")
-
-	var allRepeatEvents []RepeatedEvent
-	evs.All(&allRepeatEvents)
-
+	var allRepeatEvents []*RepeatedEvent
+	_, err := o.QueryTable("repeated_event").RelatedSel().All(&allRepeatEvents)
+	if err != nil {
+		return nil, err
+	}
 	return allRepeatEvents, nil
 }
 

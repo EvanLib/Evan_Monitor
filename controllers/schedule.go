@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -59,7 +60,10 @@ func (self SchedulesController) Create(w http.ResponseWriter, r *http.Request, p
 
 func (self SchedulesController) ScheduleEvents(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
 	revents, err := models.GetAllRepeatEvents()
-
+	for _, el := range revents {
+		fmt.Println(el.Days)
+		fmt.Println(el.Event.Name)
+	}
 	if err != nil {
 		fmt.Printf("Error in retrieving repated events: %s \n", err)
 		return err
@@ -71,6 +75,22 @@ func (self SchedulesController) ScheduleEvents(w http.ResponseWriter, r *http.Re
 		return err
 	}
 	tpl.Execute(w, revents)
+
+	return nil
+}
+
+func (self SchedulesController) ScheduleListEvents(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
+	revents, err := models.GetAllRepeatEvents()
+
+	if err != nil {
+		fmt.Printf("Error in Doing Stuff %s", err)
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(revents)
 
 	return nil
 }
