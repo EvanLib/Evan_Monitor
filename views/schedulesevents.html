@@ -1,0 +1,140 @@
+{{define "body"}}
+<div class="container">
+  <div class="row">
+    {{template "navbar" .}}
+    <div class="col-sm-9 content">
+    <div class="dashhead">
+      <div class="dashhead-titles">
+        <h6 class="dashhead-subtitle">Dashboards</h6>
+        <h2 class="dashhead-title">User's Schedules</h2>
+      </div>
+    </div>
+    <hr class="m-t">
+    <div class="table-full">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range .}}
+              <tr>
+                <td> {{.Name}} </td>
+                <td> {{.StartDate}} </td>
+                <td> {{.EndDate}}</td>
+              </tr>
+            {{end}}
+              <tr >
+                <td>
+                5:30
+                </td>
+                </td>
+                <td>
+                  Wake Up
+                </td>
+                <td>
+                  Get the fuck up you faggot.
+                </td>
+
+              </tr>
+
+            </tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#eventsModal"> Add Schedule</button>
+    </div>
+  </div>
+</div>
+  <div id="eventsModal" class="modal fade"  role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Schedule Event</h4>
+        </div>
+
+          <form method="POST" action="/events/createEvent" id="form-create-schedule">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="schedule-name" class="control-label">Schedule Name:</label>
+                <input type="text" class="form-control" id="schedule-name" name="schedule-name">
+              </div>
+            </div>
+
+
+            <div class="modal-body">
+              <div class="form-group">
+                  <label for="start-date" class="control-label">Start Date</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <span class="icon icon-calendar"></span>
+                    </span>
+                    <input type="text" name="schedule-startDate" id="schedule-start-date" value="01/01/2016" class="form-control" data-provide="datepicker" style="width: 200px;">
+                  </div>
+                  <div class="form-group">
+                  <label for="end-date" class="control-label">End Date</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <span class="icon icon-calendar"></span>
+                    </span>
+                    <input type="text" name="schedule-endDate" id="schedule-end-date" value="01/01/2016" class="form-control" data-provide="datepicker" style="width: 200px;">
+                  </div>
+                </div>
+            </div>
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="create-schedule-btn">Add Schedule</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Blow up Everything..</button>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script >
+  var scheduleSubmit = document.querySelector('#create-schedule-btn');
+  var scheduleName = document.querySelector('#schedule-name');
+  var scheduleStartDate = document.querySelector('#schedule-start-date');
+
+  //    Creating Event
+  //    Event status
+  scheduleSubmit.addEventListener('click', function(e){
+    e.preventDefault();
+    var formData = new FormData( document.getElementById("form-create-schedule") );
+    var xhr = new XMLHttpRequest();
+    $('#eventsModal').modal('hide');
+    xhr.open('POST', '/schedule/create');
+    xhr.send(formData)
+    xhr.addEventListener('readystatechange', function(){
+        if (xhr.readyState === 1) {
+            var item = xhr.responseText;
+            console.log("Event added");
+          }
+    });
+    location.reload();
+    return;
+  });
+  $.getJSON('/schedules/list', function (data) {
+      console.log(data);
+
+      var items = data.items.map(function (item) {
+        return item.key + ': ' + item.value;
+      });
+
+      showData.empty();
+
+      if (items.length) {
+        var content = '<li>' + items.join('</li><li>') + '</li>';
+        var list = $('<ul />').html(content);
+        showData.append(list);
+      }
+    });
+</script>
+{{end}}

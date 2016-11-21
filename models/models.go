@@ -7,4 +7,8 @@ import "github.com/astaxie/beego/orm"
 func init() {
 	//register models
 	orm.RegisterModel(new(Event))
+	orm.RegisterModel(new(RepeatedEvent))
+	orm.RegisterModel(new(OneTimeEvent))
+	orm.RegisterModel(new(Schedule))
+
 }

@@ -1,19 +1,41 @@
 This application was built for me to monitor my life an events that happen in it.
-current just an idea.
+currently just an idea.
 
 
----------Set UP
-/main.go
-/views:
-  /view
-  /New
-  /layout
-  /index
-  /edit
-/modes/model.go
-/controllers
-  /index.go
-  /view.go
-  /new.go
-  /delete.go
-  /edit.go
+--Schedule
+  -Setup TimeEvents struct
+  -ScheduleEvent
+    -ID
+    -Name
+    -User?
+    -TimeStart:
+      -24 Conversion
+    -Time Duration
+    -Type: Repeated, Not
+    -Days: Monday, Tuesday...Sunday
+    -IfNotRepeatedDate:
+
+  -Schedule Struct
+    -Name
+    -ID
+    -RepeatType: Week, Month, Year
+    -[]ScheduleEvents
+      -
+--Build HTML files
+  -ScheduleEvents
+  -ScheduleCreator
+
+  // Database alias.
+  name := "default"
+
+  // Drop table and re-create.
+  force := true
+
+  // Print log.
+  verbose := true
+
+  // Error.
+	err := orm.RunSyncdb(name, force, verbose)
+	if err != nil {
+		fmt.Println(err)
+	}

@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"net/http"
-	"time"
+	"strconv"
 
 	"github.com/evanlib/evan_monitor/models"
 
@@ -24,7 +25,7 @@ func (self EventsController) Index(w http.ResponseWriter, r *http.Request, ps ht
 		return err
 	}
 
-	tpl, err := template.ParseFiles("views/header_footer.html", "views/events.html")
+	tpl, err := template.ParseFiles("views/header_footer.html", "views/navbar.html", "views/events.html")
 	if err != nil {
 		return err
 	}
@@ -34,32 +35,78 @@ func (self EventsController) Index(w http.ResponseWriter, r *http.Request, ps ht
 	return nil
 }
 
-func (self EventsController) Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
-	var evType int8
-	if r.FormValue("eventType") == "pos" {
-		evType = 1
+func (self EventsController) CreateRepeatEvent(w http.ResponseWriter, r *http.Request, ps httprouter.Params) error {
+
+	var eventHourDur = r.FormValue("event-hourdur")
+	var eventMinuteDur = r.FormValue("event-minutedur")
+	var eventHour = r.FormValue("event-hour")
+	var eventMinute = r.FormValue("event-minute")
+
+	//Find a better way
+	duration, err := strconv.Atoi(eventHourDur)
+	duration = duration * 60
+	durationMin, err := strconv.Atoi(eventMinuteDur)
+	duration = duration + durationMin
+
+	//Find a better way
+	var buffer bytes.Buffer
+	if r.FormValue("event-sun") == "on" {
+		buffer.WriteString("1")
 	} else {
-		evType = -1
+		buffer.WriteString("0")
 	}
-	fmt.Fprint(w, "true")
+	if r.FormValue("event-mon") == "on" {
+		buffer.WriteString("1")
+	} else {
+		buffer.WriteString("0")
+	}
+	if r.FormValue("event-tues") == "on" {
+		buffer.WriteString("1")
+	} else {
+		buffer.WriteString("0")
+	}
+	if r.FormValue("event-wed") == "on" {
+		buffer.WriteString("1")
+	} else {
+		buffer.WriteString("0")
+	}
+	if r.FormValue("event-thurs") == "on" {
+		buffer.WriteString("1")
+	} else {
+		buffer.WriteString("0")
+	}
+	if r.FormValue("event-fri") == "on" {
+		buffer.WriteString("1")
+	} else {
+		buffer.WriteString("0")
+	}
+	if r.FormValue("event-sat") == "on" {
+		buffer.WriteString("1")
+	} else {
+		buffer.WriteString("0")
+	}
+	//Create event
 	ev := models.Event{
-		Type:        evType,
-		Name:        r.FormValue("eventName"),
-		Description: r.FormValue("eventDescription"),
-		Created:     time.Now(),
+		Type:        2,
+		Name:        r.FormValue("event-name"),
+		Description: r.FormValue("event-description"),
 	}
-	fmt.Printf("Event Name: %s saved. \n", ev.Name)
-	err := ev.Save()
-	return err
-}
+	//Create RepeatedEvent
+	rev := models.RepeatedEvent{
+		Event:         &ev,
+		Days:          buffer.String(),
+		TimeStart:     eventHour + ":" + eventMinute,
+		TimeDuraction: duration,
+	}
 
-func EventTest() {
-	ev := new(models.Event)
-	ev.Type = 1
-	ev.Name = "Test Event"
-	ev.Description = "Event Description"
-	ev.Created = time.Now()
+	fmt.Printf("Repeated Event: %s created. \n", ev.Name)
 
-	//Save Event
-	ev.Save()
+	//Insert into DB
+	err = ev.Save()
+	err = rev.Save()
+
+	if err != nil {
+		return err
+	}
+	return nil
 }

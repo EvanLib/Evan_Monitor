@@ -1,0 +1,86 @@
+{{define "body"}}
+<div class="container">
+  <div class="row">
+    {{template "navbar" .}}
+    <div class="col-sm-9 content">
+
+        <div class="dashhead">
+          <div class="dashhead-titles">
+            <h6 class="dashhead-subtitle">Dashboards</h6>
+            <h2 class="dashhead-title">User's Schedules</h2>
+          </div>
+        </div>
+        <hr class="m-t">
+
+        <div class="table-full">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                  <tr class='table-row' data-href='url://' >
+                    <td>
+                    Wake Up
+                    </td>
+                    </td>
+                    <td>
+                      You know when you roll out of bed and do stuff.
+                    </td>
+                    <td>
+                      5:30 AM
+                    </td>
+                    <td>
+                      5:30 AM
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-xs btn-pill btn-primary">Primary</button>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="dashhead">
+          <div class="dashhead-titles">
+            <h2 class="dashhead-title">Fall Schedule</h2>
+          </div>
+        </div>
+        </div>
+  </div>
+</div>
+<div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">WAKY WAKY BITCH NIGGA</h4>
+        </div>
+        <div class="modal-body">
+          <h3>Time: 1:40 PM - 2:40 PM</h3>
+          <h3>MWF</h3>
+          <p>ITS TIME TO GET UP YOU FUCK.</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script type="text/javascript">
+      $(document).ready(function($) {
+          $(".table-row").click(function() {
+              $("#docsModal").modal();
+          });
+      });
+      </script>
+{{end}}
